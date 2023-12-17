@@ -1,27 +1,25 @@
 const User = require("../Models/userSchema");
-const Seller = require("../Models/Seller")
+const Seller = require("../Models/Seller");
+const Order = require("../Models/Order");
 
 
 
 // API for registration 
 const register = async (req, res) => {
     try {
-
         const existingUser = await User.findOne({ "username": req.body.username });
-        const seller = await Seller.findOne({ "sell_id": req.body.sell_id });
+        // const seller = await Seller.findOne({ "sell_id": req.body.sell_id });
         if (existingUser) {
             return res.status(400).send('Username already exists');
         }
-        if (seller) {
-            return res.status(400).send("User Id alreadyy registered");
-        }
+        // if (seller) {
+        //     return res.status(400).send("User Id alreadyy registered");
+        // }
         const prev_email = await User.findOne({ "email": req.body.email });
         if (prev_email) {
             return res.status(400).send("Email Already exits");
         }
 
-        const sell = new Seller(req.body);
-        await sell.save();
         const user = new User(req.body);
         await user.save();
 
@@ -37,7 +35,6 @@ const register = async (req, res) => {
 const login = async (req, res) => {
     try {
 
-        // Find the user in the database
         const user = await User.findOne({ "username": req.body.username });
 
 
